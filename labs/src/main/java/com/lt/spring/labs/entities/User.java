@@ -25,4 +25,10 @@ public class User implements Serializable {
     private String lastName;
     @OneToMany(mappedBy = "userId")
     private List<Portfolio> portfolios = new ArrayList<>();
+    private String emailAddress;
+    private String phoneNumber;
+    private String countryOfResidence;
+    private String governmentIdentifier;
+    private Long balanceHeldOnAccount;
+    private IdentifierType identifierType;
 }

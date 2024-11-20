@@ -20,9 +20,9 @@ public class LabsApplication implements ApplicationRunner {
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
 		MessageGenerator mg = ctx.getBean(MessageGenerator.class);
-		System.out.printf("%s mesg from spring boot \n", mg.getMessage());
-		for(String name : ctx.getBeanDefinitionNames()) {
-			System.out.println(String.format("BEAN %s", name));
-		}
+//		System.out.printf("%s mesg from spring boot \n", mg.getMessage());
+//		for(String name : ctx.getBeanDefinitionNames()) {
+//			System.out.println(String.format("BEAN %s", name));
+//		}
 	}
 }

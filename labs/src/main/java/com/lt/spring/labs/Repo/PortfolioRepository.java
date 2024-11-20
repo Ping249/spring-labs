@@ -11,4 +11,5 @@ public interface PortfolioRepository extends CrudRepository<Portfolio, Long> {
 //    void addPortfolio(String name, Long userId);
 //    Portfolio getPortfolio(Long id);
 //    Iterable<Portfolio> getPortfolios();
+    Iterable<Portfolio> findAllByUserId(Long id);
 }
