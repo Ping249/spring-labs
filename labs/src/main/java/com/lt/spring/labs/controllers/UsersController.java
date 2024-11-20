@@ -19,7 +19,7 @@ public class UsersController {
     @ResponseBody
     public void addUser(@PathVariable String firstName, @PathVariable String lastName)
     {
-        userRepo.save(new User(0L, firstName, lastName));
+        userRepo.save(new User(0L, firstName, lastName, null));
     }
     @GetMapping("/")
     @ResponseBody

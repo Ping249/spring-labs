@@ -1,10 +1,18 @@
 package com.lt.spring.labs.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serializable;
 
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 @Table(name="portfolios")
 public class Portfolio implements Serializable {
     @Id
@@ -12,38 +20,5 @@ public class Portfolio implements Serializable {
     private Long id;
     private String name;
     private Long userId;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public Portfolio() {
-    }
-
-    public Portfolio(Long id, String name, Long userId) {
-        this.id = id;
-        this.name = name;
-        this.userId = userId;
-    }
 
 }
