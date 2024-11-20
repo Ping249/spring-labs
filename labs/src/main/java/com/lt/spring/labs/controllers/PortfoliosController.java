@@ -16,19 +16,19 @@ public class PortfoliosController {
     @ResponseBody
     public void addPortfolio(@PathVariable String name, @PathVariable Long user_id)
     {
-        portRepo.addPortfolio(name, user_id);
+        portRepo.save(new Portfolio(0L, name, user_id));
     }
     @GetMapping("")
     @ResponseBody
     public Iterable<Portfolio> getPortfolios()
     {
-        return portRepo.getPortfolios();
+        return portRepo.findAll();
     }
     @GetMapping("{id}")
     @ResponseBody
     public Portfolio getPortfolio(@PathVariable Long id)
     {
-        return portRepo.getPortfolio(id);
+        return portRepo.findById(id).get();
     }
 
 }

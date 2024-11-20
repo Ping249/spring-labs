@@ -2,9 +2,13 @@ package com.lt.spring.labs.Repo;
 
 
 import com.lt.spring.labs.entities.Portfolio;
+import com.lt.spring.labs.entities.User;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-public interface PortfolioRepository {
-    void addPortfolio(String name, Long userId);
-    Portfolio getPortfolio(Long id);
-    Iterable<Portfolio> getPortfolios();
+@Repository
+public interface PortfolioRepository extends CrudRepository<Portfolio, Long> {
+//    void addPortfolio(String name, Long userId);
+//    Portfolio getPortfolio(Long id);
+//    Iterable<Portfolio> getPortfolios();
 }

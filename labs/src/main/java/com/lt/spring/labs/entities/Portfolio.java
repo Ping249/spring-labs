@@ -1,6 +1,14 @@
 package com.lt.spring.labs.entities;
 
-public class Portfolio {
+import jakarta.persistence.*;
+
+import java.io.Serializable;
+
+@Entity
+@Table(name="portfolios")
+public class Portfolio implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private Long userId;
