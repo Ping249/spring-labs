@@ -2,13 +2,14 @@ package com.lt.spring.labs.services;
 
 import com.lt.spring.labs.Repo.UserRepository;
 import com.lt.spring.labs.configuration.MyMapper;
-import com.lt.spring.labs.dto.AddUserDTO;
-import com.lt.spring.labs.dto.GetUserProfileDTO;
-import com.lt.spring.labs.dto.UpdateContactDetailsDTO;
+import com.lt.spring.labs.dto.*;
 import com.lt.spring.labs.entities.User;
+import com.lt.spring.labs.exceptions.ForbiddenAccountActionException;
+import com.lt.spring.labs.exceptions.ItemNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -48,19 +49,48 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public GetUserProfileDTO updateContactDetails(UpdateContactDetailsDTO request)
-    {
-        User u = userRepo.findById(request.getId()).get();
-        if(!u.getEmailAddress().isBlank() && !u.getEmailAddress().equalsIgnoreCase(request.getEmailAddress())) {
+    public GetUserProfileDTO updateContactDetails(UpdateContactDetailsDTO request) {
+        Optional<User> opUser = userRepo.findById(request.getId());
+        if(opUser.isEmpty()) {
+            throw new ItemNotFoundException("User not found");
+        }
+        User u = opUser.get();
+        if(request.getEmailAddress()  != null  && !u.getEmailAddress().equalsIgnoreCase(request.getEmailAddress())) {
             u.setEmailAddress(request.getEmailAddress());
         }
-        if(!u.getPhoneNumber().isBlank() && !u.getPhoneNumber().equalsIgnoreCase(request.getPhoneNumber())) {
+        if(request.getPhoneNumber() != null && !u.getPhoneNumber().equalsIgnoreCase(request.getPhoneNumber())) {
             u.setPhoneNumber(request.getPhoneNumber());
         }
         userRepo.save(u);
-        GetUserProfileDTO uDTO = this.mapper.map(u, GetUserProfileDTO.class);
-        return uDTO;
+        return mapper.map(u, GetUserProfileDTO.class);
     }
 
-
+    @Override
+    public boolean performTransfer(TransferFundsDTO request) {
+        Optional<User> opUser = userRepo.findById(request.getUserId());
+        if(opUser.isEmpty()) {
+            throw new ItemNotFoundException("User not found");
+        }
+        if(request.getAmount() == 0) {
+            throw new ForbiddenAccountActionException("Cannot make transfer with no value");
+        }
+        User user = opUser.get();
+        if(request.getAmount() < 0) {
+            if (user.getBalanceHeldOnAccount() + request.getAmount() < 0) {
+                throw new ForbiddenAccountActionException("Cannot debit the given amount");
+            }
+        }
+        user.setBalanceHeldOnAccount(user.getBalanceHeldOnAccount() + request.getAmount());
+        userRepo.save(user);
+        return true;
+    }
+    @Override
+    public GetBalanceDTO getBalanceOnAccount(Long id) {
+        Optional<User> opUser = userRepo.findById(id);
+        if(opUser.isEmpty()) {
+            throw new ItemNotFoundException("User not found");
+        }
+        User u = opUser.get();
+        return new GetBalanceDTO(u.getId(), u.getBalanceHeldOnAccount());
+    }
 }

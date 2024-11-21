@@ -1,8 +1,6 @@
 package com.lt.spring.labs.services;
 
-import com.lt.spring.labs.dto.AddUserDTO;
-import com.lt.spring.labs.dto.GetUserProfileDTO;
-import com.lt.spring.labs.dto.UpdateContactDetailsDTO;
+import com.lt.spring.labs.dto.*;
 import com.lt.spring.labs.entities.User;
 
 public interface UserService {
@@ -10,4 +8,6 @@ public interface UserService {
     Iterable<GetUserProfileDTO> getUsers();
     GetUserProfileDTO addUser(AddUserDTO user);
     GetUserProfileDTO updateContactDetails(UpdateContactDetailsDTO request);
+    boolean performTransfer(TransferFundsDTO request);
+    public GetBalanceDTO getBalanceOnAccount(Long id);
 }

@@ -9,6 +9,7 @@ import com.lt.spring.labs.entities.Order;
 import com.lt.spring.labs.entities.Status;
 import com.lt.spring.labs.entities.Stock;
 import com.lt.spring.labs.entities.User;
+import com.lt.spring.labs.exceptions.ItemNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -31,12 +32,19 @@ public class OrderServiceImpl implements OrderService{
 
     @Override
     public GetOrderDTO placeOrder(PlaceOrderDTO request) {
-        User u = repoUser.findById(request.getUserId()).get();
-        Stock s = repoStock.findBySymbol(request.getSymbol()).get();
-        Order o = new Order(0L, request.getUserId(), s,
-                request.getQuantity(), Instant.now(), request.getSide(), Status.PLACED);
-        repoOrder.save(o);
-        GetOrderDTO dtoOrder = modelMapper.map(o, GetOrderDTO.class);
-        return dtoOrder;
+        Optional<User> opUser = repoUser.findById(request.getUserId());
+        Optional<Stock> opStock = repoStock.findBySymbol(request.getSymbol());
+        if(opUser.isEmpty()) {
+            throw new ItemNotFoundException("User not found");
+        }
+        if(opStock.isEmpty()) {
+            throw new ItemNotFoundException("Stock not found");
+        }
+        Order order = new Order(0L, opUser.get().getId(), opStock.get(),
+                request.getQuantity(), Instant.now(),
+                request.getSide(), Status.REQUESTED);
+        repoOrder.save(order);
+        return modelMapper.map(order, GetOrderDTO.class);
     }
+
 }

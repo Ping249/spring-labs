@@ -3,6 +3,7 @@ package com.lt.spring.labs.controllers;
 import com.lt.spring.labs.Repo.PortfolioRepository;
 import com.lt.spring.labs.Repo.UserRepository;
 import com.lt.spring.labs.dto.AddUserDTO;
+import com.lt.spring.labs.dto.GetBalanceDTO;
 import com.lt.spring.labs.dto.GetUserProfileDTO;
 import com.lt.spring.labs.dto.UpdateContactDetailsDTO;
 import com.lt.spring.labs.entities.Portfolio;
@@ -51,5 +52,11 @@ public class UsersController {
     @PatchMapping("{id}")
     public GetUserProfileDTO updateContactDetails(@RequestBody @Valid UpdateContactDetailsDTO details) {
         return userService.updateContactDetails(details);
+    }
+
+    @GetMapping("{id}/balance")
+    public GetBalanceDTO getUserBalance(@PathVariable Long id)
+    {
+        return userService.getBalanceOnAccount(id);
     }
 }
