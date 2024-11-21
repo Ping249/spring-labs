@@ -6,6 +6,7 @@ import com.lt.spring.labs.dto.AddUserDTO;
 import com.lt.spring.labs.dto.GetUserProfileDTO;
 import com.lt.spring.labs.dto.UpdateContactDetailsDTO;
 import com.lt.spring.labs.entities.User;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.stream.Collectors;
@@ -14,9 +15,9 @@ import java.util.stream.StreamSupport;
 @Service
 public class UserServiceImpl implements UserService{
     private UserRepository userRepo;
-    private final MyMapper mapper;
+    private final ModelMapper mapper;
 
-    public UserServiceImpl(UserRepository userRepo, MyMapper mapper) {
+    public UserServiceImpl(UserRepository userRepo, ModelMapper mapper) {
         this.mapper = mapper;
         this.userRepo = userRepo;
     }
