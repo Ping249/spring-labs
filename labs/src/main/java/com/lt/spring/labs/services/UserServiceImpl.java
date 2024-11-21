@@ -1,11 +1,10 @@
 package com.lt.spring.labs.services;
 
 import com.lt.spring.labs.Repo.UserRepository;
-import com.lt.spring.labs.configuration.MyMapper;
 import com.lt.spring.labs.dto.*;
 import com.lt.spring.labs.entities.User;
-import com.lt.spring.labs.exceptions.ForbiddenAccountActionException;
-import com.lt.spring.labs.exceptions.ItemNotFoundException;
+import com.lt.spring.labs.exceptions.core.ForbiddenAccountActionException;
+import com.lt.spring.labs.exceptions.core.ItemNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 

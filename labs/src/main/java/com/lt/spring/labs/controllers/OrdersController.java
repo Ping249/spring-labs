@@ -2,6 +2,7 @@ package com.lt.spring.labs.controllers;
 
 import com.lt.spring.labs.dto.GetOrderDTO;
 import com.lt.spring.labs.dto.PlaceOrderDTO;
+import com.lt.spring.labs.exceptions.utils.PlatformExceptions;
 import com.lt.spring.labs.services.OrderService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,10 @@ public class OrdersController {
     }
     @PostMapping
     public GetOrderDTO placeOrder(@RequestBody @Valid PlaceOrderDTO orderRequest) {
-        return svcOrder.placeOrder(orderRequest);
+        try {
+            return svcOrder.placeOrder(orderRequest);
+        } catch (Exception e) {
+            throw PlatformExceptions.returnBadRequest(e);
+        }
     }
 }

@@ -9,7 +9,7 @@ import com.lt.spring.labs.entities.Order;
 import com.lt.spring.labs.entities.Status;
 import com.lt.spring.labs.entities.Stock;
 import com.lt.spring.labs.entities.User;
-import com.lt.spring.labs.exceptions.ItemNotFoundException;
+import com.lt.spring.labs.exceptions.core.ItemNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 

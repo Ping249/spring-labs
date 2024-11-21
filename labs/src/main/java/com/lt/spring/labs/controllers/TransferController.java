@@ -1,6 +1,9 @@
 package com.lt.spring.labs.controllers;
 
 import com.lt.spring.labs.dto.TransferFundsDTO;
+import com.lt.spring.labs.exceptions.core.ForbiddenAccountActionException;
+import com.lt.spring.labs.exceptions.core.ItemNotFoundException;
+import com.lt.spring.labs.exceptions.utils.PlatformExceptions;
 import com.lt.spring.labs.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +22,12 @@ public class TransferController {
 
     @PostMapping
     public boolean transfer(@RequestBody @Valid TransferFundsDTO request) {
-        return userSvc.performTransfer(request);
+        try {
+            return userSvc.performTransfer(request);
+        } catch(ItemNotFoundException e) {
+            throw PlatformExceptions.returnNotFound(e);
+        } catch (ForbiddenAccountActionException e) {
+            throw PlatformExceptions.returnBadRequest(e);
+        }
     }
 }
