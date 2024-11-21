@@ -78,10 +78,5 @@ public class UsersController {
         return userService.getBalanceOnAccount(id);
     }
 
-    @ExceptionHandler(ConstraintViolationException.class)
-    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-    public ResponseEntity<ErrorBody> handleValidationException(MethodArgumentNotValidException e) {
-        ErrorBody body = ErrorBuilder.buildValidationErrorResponse(e);
-        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(body);
-    }
+
 }
