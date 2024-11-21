@@ -1,6 +1,7 @@
 package com.lt.spring.labs.services;
 
 import com.lt.spring.labs.Repo.UserRepository;
+import com.lt.spring.labs.configuration.MyMapper;
 import com.lt.spring.labs.dto.AddUserDTO;
 import com.lt.spring.labs.dto.GetUserProfileDTO;
 import com.lt.spring.labs.dto.UpdateContactDetailsDTO;
@@ -13,34 +14,35 @@ import java.util.stream.StreamSupport;
 @Service
 public class UserServiceImpl implements UserService{
     private UserRepository userRepo;
-    public UserServiceImpl(UserRepository userRepo) {
+    private final MyMapper mapper;
+
+    public UserServiceImpl(UserRepository userRepo, MyMapper mapper) {
+        this.mapper = mapper;
         this.userRepo = userRepo;
     }
 
     @Override
     public GetUserProfileDTO addUser(AddUserDTO user) {
-        //return userRepo.save(user);
         User u = new User(0L, user.getFirstName(),
-                user.getLastName(), null, user.getEmailAddress(),
+                user.getLastName(), null,  user.getEmailAddress(),
                 user.getPhoneNumber(), user.getCountryOfResidence(),
                 user.getGovernmentIdentifier(), 0L, user.getIdentifierType());
-        userRepo.save(u);
-        return new GetUserProfileDTO(u.getId(), u.getFirstName(), u.getLastName(),
-                u.getEmailAddress(), u.getPhoneNumber());
+        u = userRepo.save(u);
+        GetUserProfileDTO uDTO = this.mapper.map(u, GetUserProfileDTO.class);
+        return uDTO;
     }
 
     @Override
     public GetUserProfileDTO getUser(Long id) {
         User u = userRepo.findById(id).get();
-        return new GetUserProfileDTO(u.getId(), u.getFirstName(), u.getLastName(),
-                u.getEmailAddress(), u.getPhoneNumber());
+        GetUserProfileDTO uDTO = this.mapper.map(u, GetUserProfileDTO.class);
+        return uDTO;
     }
 
     @Override
     public Iterable<GetUserProfileDTO> getUsers() {
-        //return userRepo.findAll();
         return StreamSupport.stream(userRepo.findAll().spliterator(), false)
-                .map(u -> new GetUserProfileDTO(u.getId(), u.getFirstName(), u.getLastName(), u.getEmailAddress(), u.getPhoneNumber()))
+                .map(u -> mapper.map(u, GetUserProfileDTO.class))
                 .collect(Collectors.toList());
     }
 
@@ -55,7 +57,8 @@ public class UserServiceImpl implements UserService{
             u.setPhoneNumber(request.getPhoneNumber());
         }
         userRepo.save(u);
-        return new GetUserProfileDTO(u.getId(), u.getFirstName(), u.getLastName(), u.getEmailAddress(), u.getPhoneNumber());
+        GetUserProfileDTO uDTO = this.mapper.map(u, GetUserProfileDTO.class);
+        return uDTO;
     }
 
 

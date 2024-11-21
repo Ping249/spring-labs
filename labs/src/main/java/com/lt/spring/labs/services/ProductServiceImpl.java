@@ -21,7 +21,7 @@ public class ProductServiceImpl implements  ProductService{
     @Override
     public List<GetProductDetailsDTO> getProducts() {
         return StreamSupport.stream( repoStock.findAll().spliterator(),false)
-                .map(s-> new GetProductDetailsDTO(s.getId(), s.getSymbol(), s.getMinOrder(), s.getMaxOrder()))
+                .map(s -> mapper.map(s, GetProductDetailsDTO.class))
                 .collect(Collectors.toList());
     }
 }
