@@ -9,12 +9,17 @@ import com.lt.spring.labs.dto.UpdateContactDetailsDTO;
 import com.lt.spring.labs.entities.Portfolio;
 import com.lt.spring.labs.entities.User;
 import com.lt.spring.labs.exceptions.core.ItemNotFoundException;
+import com.lt.spring.labs.exceptions.utils.ErrorBuilder;
 import com.lt.spring.labs.exceptions.utils.PlatformExceptions;
+import com.lt.spring.labs.exceptions.web.ErrorBody;
 import com.lt.spring.labs.services.PortfolioService;
 import com.lt.spring.labs.services.UserService;
+import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -71,5 +76,12 @@ public class UsersController {
     @GetMapping("{id}/balance")
     public GetBalanceDTO getBalance(@PathVariable Long id) {
         return userService.getBalanceOnAccount(id);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    public ResponseEntity<ErrorBody> handleValidationException(MethodArgumentNotValidException e) {
+        ErrorBody body = ErrorBuilder.buildValidationErrorResponse(e);
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(body);
     }
 }
