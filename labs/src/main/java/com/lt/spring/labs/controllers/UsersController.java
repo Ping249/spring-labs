@@ -2,10 +2,7 @@ package com.lt.spring.labs.controllers;
 
 import com.lt.spring.labs.Repo.PortfolioRepository;
 import com.lt.spring.labs.Repo.UserRepository;
-import com.lt.spring.labs.dto.AddUserDTO;
-import com.lt.spring.labs.dto.GetBalanceDTO;
-import com.lt.spring.labs.dto.GetUserProfileDTO;
-import com.lt.spring.labs.dto.UpdateContactDetailsDTO;
+import com.lt.spring.labs.dto.*;
 import com.lt.spring.labs.entities.Portfolio;
 import com.lt.spring.labs.entities.User;
 import com.lt.spring.labs.exceptions.core.ItemNotFoundException;
@@ -55,7 +52,7 @@ public class UsersController {
 
 
     @GetMapping("{id}/portfolios")
-    public Iterable<Portfolio> getUsersPortfolios(@PathVariable Long id) {
+    public Iterable<GetPortfolioDTO> getUsersPortfolios(@PathVariable Long id) {
         try {
             return portService.getPortfoliosByUserId(id);
         } catch (ItemNotFoundException e) {
