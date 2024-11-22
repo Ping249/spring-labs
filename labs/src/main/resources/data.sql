@@ -24,3 +24,7 @@ INSERT INTO users (first_name, last_name, email_address,
 
 INSERT INTO portfolios (name, user_id) VALUES ('Energy', 1);
 INSERT INTO assets (portfolio_id, product_id, quantity, price) VALUES (1,2,500,887);
+
+INSERT INTO portfolios (name, user_id) VALUES ('Automotive', 1);
+INSERT INTO portfolios (name, user_id) VALUES ('Residential', 1);
+INSERT INTO portfolios (name, user_id) VALUES ('Clothing', 1);
